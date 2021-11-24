@@ -1,55 +1,51 @@
-#include <unistd.h>
+#include <unistd.h> 
+#include <stdio.h> 
 
-void	ft_putchar(char c)
+void ft_putchar(char a) 
+{ 
+	write(1, &a, 1); 
+} 
+
+void ft_print_combn(int n) 
 {
-	write(1, &c, 1);
-}
-
-void	ft_print_range(int *range, int n)
-{
-	int	i;
-	int	display;
-
-	display = 1;
-	i = 0;
-	while (++i < n)
-		if (range [i - 1] >= range [i])
-			display = 0;
-	if (!display)
+	int	combn[n];
+	int	p;
+	if (n <= 0 || n >= 10)
 		return ;
-	i = -1;
-	while (++i < n)
-		ft_putchar(range[i] + 48);
-	if (range[0] < (10 - n))
+	else
 	{
-		ft_putchar(',');
-		ft_putchar(' ');
-	}
-}
-
-void	ft_print_combn(int n)
-{
-	int	i;
-	int	range[10];
-
-	if (n > 10 || n < 0)
-		return ;
-	i = -1;
-	while (range[0] <= (10 - n) && n >= 1)
-	{
-		ft_print_range(range, n);
-		if (n == 10)
-			break ;
-		range[n - 1]++;
-		i = n;
-		while (i && n > 1)
+		p = 0;
+		while (p < n)
 		{
-			i--;
-			if (range[i] > 9)
-			{
-				range[i - 1]++;
-				range[i] = 0;
-			}
+			combn[p] = p;
+			p++;
 		}
-	}
-}
+		while (p > 0)
+		{
+			int maxdigit = 10;
+			p = 0;
+			while (p < n)
+			{
+				ft_putchar(combn[p] + '0');
+				p++;
+			}
+			p = n;
+			while (p--)
+			{
+				int digit = combn[p];
+				if (digit < --maxdigit) 
+				{ 
+					do 
+					{ 
+						combn[p++] = ++digit; 
+					} 
+					while (p < n); 
+					ft_putchar(','); 
+					ft_putchar(' '); 
+					break; 
+				} 
+			}
+		}  
+		ft_putchar('\n'); 
+	} 
+} 
